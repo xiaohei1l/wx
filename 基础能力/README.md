@@ -1,5 +1,5 @@
 ## 基础能力-非原创-学习使用
-### 云托管
+### (一)云托管
 #### 1.云开发平台->云托管
 #### 2.创建容器express-test
 #### 3.小程序调用
@@ -17,7 +17,7 @@ const r = await c1.callContainer({
   method: 'GET',
 })
 ```
-### 云函数
+### (二)云函数
 #### 1)获取Openld
 #### 1)step1 quickStartFunctions 云函数代码
 ```
@@ -76,10 +76,37 @@ wx.cloud.callFunction({
   }
 }).then((resp) => console.log(resp))
 ```
-### 数据库
+### (三)数据库
 #### 在‘cloudfunctions/quickstarFunctions'目录右键，选择[上传并部署-云端安全依赖】，等待云函数上传完成后重试。
-
-### 云存储 自带CDN加速文件存储
+#### 1.创建集合 (云开发数据库支持自动备份、无损回档，并且QPS高达3千+)
+##### 已自动创建名为“sales“的体验集合，可打开“云开发控制台>数据库>记录列表"中找到该集合。
+##### 云函数代码示例
+```
+const cloud = require('wx-server-sdk');
+cloud.init({
+  env: cloud.DYNAMIC_CURRENT_ENV
+});
+const db = cloud.database();
+//创建集合云函数入口函数
+exports.main = async (event, context) => {
+  try {
+    //创建集合
+    await db.createCollection('sales');
+    return {
+      success: true
+    };
+  } catch (e) {
+    return {
+      success: true,
+      data: 'create collection success'
+    };
+  }
+;
+```
+#### 2.增删改查记录
+##### 参考云函数quickstartFunctions示例代码
+##### 有三个按钮‘查询记录’‘更新记录’‘新增记录’
+### (四)云存储 自带CDN加速文件存储
 #### 上传文件
 ```
 wx.chooseMedia({
@@ -102,7 +129,7 @@ success: (chooseResult) => {
 }
 });
 ```
-### 扩展能力-AI
+### (五)扩展能力-AI
 #### 大模型对话指引_集成Agent-UI组件指引
 #### step1 拷贝组件源码包
 https://gitee.com/TencentCloudBase/cloudbase-agent-ui/tree/main/apps/miniprogram-agent-ui/miniprogram/components/agent-ui
